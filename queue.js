@@ -21,7 +21,7 @@ const handleQueueConnection = async (err, conn) => {
     spinner.succeed(green("queue: a channel was created successful"));
 
     const queueName =
-      process.env.DEW_QUEUE_NAME || "DHIS2_EMAIL_INTERGRATION_QUEUE";
+      process.env.DEW_QUEUE_NAME || "DHIS2_EMAIL_INTEGRATION_QUEUE";
     ch.assertQueue(queueName, { durable: true });
 
     spinner.succeed(green(`queue: waiting for messages in ${queueName}.`));
@@ -35,7 +35,7 @@ const handleQueueConnection = async (err, conn) => {
       const data = JSON.parse(msg.content.toString());
       await email("mmalumbo@gmail.com", data, spinner);
 
-      await setTimeout(function() {
+      await setTimeout(function () {
         spinner.succeed(green("email: email processed"));
         ch.ack(msg);
       }, 1000);

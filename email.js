@@ -45,8 +45,8 @@ const sendEmail = async (migration, queueData, spinner) => {
   const html = pug.renderFile(`${__dirname}/views/email.pug`, {
     ...queueData,
     ...migration,
-    client: "Malu",
-    desc: "yes"
+    client: "Openlmis",
+    desc: "Description"
   });
 
   const inlinedHtml = juice(html);
