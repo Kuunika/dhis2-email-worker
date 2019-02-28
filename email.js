@@ -56,7 +56,6 @@ const sendEmail = async (migration, queueData, spinner) => {
   let file = source
 
   if (source === 'failqueue' && !flag) file = 'migration'
-  console.log(source, flag, file)
 
   const html = pug.renderFile(`${__dirname}/views/${file}.pug`, {
     ...queueData,
