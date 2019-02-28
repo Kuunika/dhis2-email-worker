@@ -1,0 +1,9 @@
+extends email-layout
+
+block content
+  h4 Dear #{client}
+
+  p You tried to migrate data into DHIS2 with the following description #{desc}ù. We were unable to migrate your data because some data elements were not recognized. Please ensure that you are migrating only those data elements to which you are authorised.
+
+  p Regards,
+  p Administrator
