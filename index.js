@@ -1,11 +1,11 @@
-const dotenv = require("dotenv");
-const queue = require("./queue");
+const dotenv = require('dotenv')
+const queue = require('./queue')
 
-const { error } = dotenv.config();
+const { error } = dotenv.config()
 
 if (error) {
-  console.log(error);
-  process.exit(1);
+  console.log(error)
+  process.exit(1)
 }
 
-queue();
+queue()

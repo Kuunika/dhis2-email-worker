@@ -1,0 +1,19 @@
+extends email-layout
+
+block content
+  h4 Dear #{client}
+
+  p We have successfully migrated your Data into DHIS2 for the request you made with the following description #{desc}.
+
+  p Below is the summary of the Entire Process:
+  ul
+    li Process Start Time: #{uploadedAt}
+    li Data Elements Validated At: #{structureValidatedAt}
+    li Total Data Elements: #{totalDataElements}
+    li Total Migrated Data Elements: #{totalMigratedElements}
+    li Process Complete Time: #{ new Date()}
+
+  br
+
+  p Regards
+  p Administrator
