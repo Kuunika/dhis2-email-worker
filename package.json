@@ -22,7 +22,8 @@
     "nodemailer": "^5.1.1",
     "ora": "^3.0.0",
     "pug": "^2.0.3",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.42.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^5.14.1",
