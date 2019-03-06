@@ -4,6 +4,8 @@ const { red, green, cyan } = require('chalk')
 
 const email = require('./email')
 
+const { Logger } = require('./utils/logger')
+
 const parseJsonData = data => {
   try {
     return JSON.parse(data)
@@ -44,9 +46,10 @@ const handleQueueConnection = async (err, conn) => {
     const readMessage = async msg => {
       spinner.succeed(cyan(`email: received message${msg.content.toString()}`))
       const data = parseJsonData(msg.content.toString())
-      await email(data, spinner)
+      const logger = new Logger(data.channelId)
+      await email(data, spinner, logger)
       await ch.ack(msg)
-      spinner.succeed(green('email: email processed'))
+      logger.info(green('email: email processed'))
     }
 
     ch.consume(queueName, readMessage, options)
