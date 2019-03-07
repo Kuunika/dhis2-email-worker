@@ -61,8 +61,8 @@ const sendEmail = async (migration, queueData, spinner) => {
   const html = pug.renderFile(`${__dirname}/views/${file}.pug`, {
     ...queueData,
     ...migration,
-    client: queueData.client || 'OpenLMIS',
-    desc: 'yes'
+    client: 'Openlmis',
+    desc: 'Description'
   })
 
   const inlinedHtml = juice(html)

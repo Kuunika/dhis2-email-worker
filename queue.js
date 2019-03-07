@@ -30,9 +30,7 @@ const handleQueueConnection = async (err, conn) => {
 
     const queueName =
       process.env.DEW_QUEUE_NAME || 'DHIS2_EMAIL_INTEGRATION_QUEUE'
-    ch.assertQueue(queueName, {
-      durable: true
-    })
+    ch.assertQueue(queueName, { durable: true })
 
     spinner.succeed(green(`queue: waiting for messages in ${queueName}.`))
     spinner.info(cyan(`queue: to exit press "CTRL+C"`))
@@ -43,10 +41,14 @@ const handleQueueConnection = async (err, conn) => {
 
     const readMessage = async msg => {
       spinner.succeed(cyan(`email: received message${msg.content.toString()}`))
-      const data = parseJsonData(msg.content.toString())
+
+      const data = JSON.parse(msg.content.toString())
       await email('mmalumbo@gmail.com', data, spinner)
-      await ch.ack(msg)
-      spinner.succeed(green('email: email processed'))
+
+      await setTimeout(function () {
+        spinner.succeed(green('email: email processed'))
+        ch.ack(msg)
+      }, 1000)
     }
 
     ch.consume(queueName, readMessage, options)
