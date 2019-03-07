@@ -4,15 +4,12 @@ const juice = require('juice')
 const htmlToText = require('html-to-text')
 
 const {
-  getClientModel,
   getMigrationModel,
-  getDataSetModel,
   getMigrationDataElementsModel,
-  getDataElementModel,
   getFailQueueModel
 } = require('./models')
 
-module.exports = async (to, data, spinner) => {
+module.exports = async (data, spinner, logger) => {
   const sequelize = await require('./database')(spinner)
 
   const Migration = await getMigrationModel(sequelize)
@@ -24,14 +21,17 @@ module.exports = async (to, data, spinner) => {
     const res =
       source !== 'failqueue'
         ? migration.dataValues
-        : { ...migration.dataValues, ...(await getSum(sequelize, migrationId)) }
-    await sendEmail(res, data, spinner)
+        : {
+          ...migration.dataValues,
+          ...(await getSum(sequelize, migrationId, logger))
+        }
+    await sendEmail(res, data, spinner, logger)
   } else {
-    console.log('no migration was found')
+    logger.info('No migration was found')
   }
 }
 
-const getSum = async (sequelize, migrationId) => {
+const getSum = async (sequelize, migrationId, logger) => {
   const aggregateData = {}
   const MigrationDataElements = await getMigrationDataElementsModel(sequelize)
   const FailQueue = await getFailQueueModel(sequelize)
@@ -39,24 +39,27 @@ const getSum = async (sequelize, migrationId) => {
   let where = { migrationId, isMigrated: true }
 
   aggregateData.totalMigratedElements =
-    (await FailQueue.count({ where }).catch(error)) +
-    (await MigrationDataElements.count({ where }).catch(error))
+    (await FailQueue.count({ where }).catch(error =>
+      logger.error(error.message)
+    )) +
+    (await MigrationDataElements.count({ where }).catch(error =>
+      logger.error(error.message)
+    ))
 
   where.isMigrated = false
   aggregateData.totalFailedElements = await FailQueue.count({ where }).catch(
-    error
+    error => logger.info(error.message)
   )
 
   return aggregateData
 }
 
-const sendEmail = async (migration, queueData, spinner) => {
+const sendEmail = async (migration, queueData, spinner, logger) => {
   const { source, flag } = queueData
 
   let file = source
 
   if (source === 'failqueue' && !flag) file = 'migration'
-  console.log(source, flag, file)
 
   const html = pug.renderFile(`${__dirname}/views/${file}.pug`, {
     ...queueData,
@@ -87,10 +90,8 @@ const sendEmail = async (migration, queueData, spinner) => {
 
   const { rejected = [] } = await transport.sendMail(mailOptions)
   if (rejected.length > 0) {
-    spinner.warn('email: email rejected')
+    logger.info('email: email rejected')
   } else {
-    spinner.succeed(`email: email sent successfully`)
+    logger.info(`email: email sent successfully`)
   }
 }
-
-const error = err => console.log(err.message)
