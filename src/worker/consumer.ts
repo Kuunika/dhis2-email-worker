@@ -1,6 +1,6 @@
 import { consume, createWorker, Message } from './helpers';
+import { sendEmail } from '../email';
 import Worker = require('tortoise');
-
 const env = process.env;
 
 export const consumer = async (): Promise<void> => {
@@ -10,7 +10,7 @@ export const consumer = async (): Promise<void> => {
   const callback = async (message: any, ack: any) => {
     try {
       const parsedMessage: Message = JSON.parse(message);
-      console.log(parsedMessage);
+      await sendEmail(parsedMessage);
     } catch (error) {
       console.log(error.message);
     }
