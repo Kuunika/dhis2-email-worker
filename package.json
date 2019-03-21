@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index"
+    "test": "jest /src/tests/ --verbose --detectOpenHandles",
+    "start": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +22,9 @@
     "nodemailer": "^5.1.1",
     "ora": "^3.0.0",
     "pug": "^2.0.3",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^4.42.0",
+    "tortoise": "^1.0.1",
     "winston": "^3.2.1"
   },
   "devDependencies": {
