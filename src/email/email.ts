@@ -30,8 +30,6 @@ const sendEmail = async (message: Message): Promise<boolean> => {
   const { rejected = [] } = await transport.sendMail(mailOptions);
   if (rejected.length > 0) {
     return false;
-  } else {
-    console.log('sent');
   }
   return true;
 };
