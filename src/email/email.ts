@@ -12,7 +12,7 @@ const sendEmail = async (message: Message): Promise<boolean> => {
 
   const mailOptions = {
     from: `Kuunika <noreply@kuunika.org>`,
-    to: await fetchClientEmail('dude'),
+    to: await fetchClientEmail(message.clientId),
     subject: `Data migration for ${new Date()}`,
     html,
     text,
