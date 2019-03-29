@@ -14,12 +14,16 @@
     "@types/node": "^11.11.4",
     "@types/pug": "^2.0.4",
     "amqplib": "^0.5.3",
+    "axios": "^0.18.0",
     "chalk": "^2.4.2",
+    "crypto-js": "^3.1.9-1",
     "dotenv": "^6.2.0",
     "es6-promisify": "^6.0.1",
+    "got": "^9.6.0",
     "html-to-text": "^4.0.0",
     "jest": "^24.1.0",
     "juice": "^5.1.0",
+    "moment": "^2.24.0",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.4",
     "nodemailer": "^5.1.1",
@@ -29,6 +33,7 @@
     "sequelize": "^4.42.0",
     "tortoise": "^1.0.1",
     "typeorm": "^0.2.15",
+    "uuid": "^3.3.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {
@@ -37,6 +42,8 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.4000"
   }
 }

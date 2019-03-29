@@ -1,4 +1,4 @@
-import { Message } from '../worker';
+import { Message, fetchClientEmail } from '../worker';
 import { loadTemplate } from '../templates';
 import nodemailer = require('nodemailer');
 import juice = require('juice');
@@ -12,7 +12,7 @@ const sendEmail = async (message: Message): Promise<boolean> => {
 
   const mailOptions = {
     from: `Kuunika <noreply@kuunika.org>`,
-    to: message.email,
+    to: await fetchClientEmail('dude'),
     subject: `Data migration for ${new Date()}`,
     html,
     text,
