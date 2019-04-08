@@ -44,7 +44,6 @@ const getSum = async (
     .getRepository(FailQueue)
     .count({ migrationId, isMigrated: false });
 
-  connection.close();
   return { totalMigratedElements, totalFailedElements };
 };
 
