@@ -1,10 +1,14 @@
+import { Connection } from 'typeorm';
 import { Message } from '../worker';
 import { getData } from '../query';
 import { join } from 'path';
 import pug from 'pug';
 let file: string;
 
-const loadTemplate = async (message: Message): Promise<any> => {
+const loadTemplate = async (
+  connection: Connection,
+  message: Message
+): Promise<any> => {
   const { source, migrationFailed } = message;
 
   file = source;
@@ -12,7 +16,7 @@ const loadTemplate = async (message: Message): Promise<any> => {
     file = 'migration';
   }
 
-  const data: object = await getData(message);
+  const data: object = await getData(connection, message);
 
   const html = pug.renderFile(join(__dirname, '..', `views/${file}.pug`), {
     ...message,

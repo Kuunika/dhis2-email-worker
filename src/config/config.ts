@@ -1,25 +1,30 @@
-import { config, DotenvParseOutput } from 'dotenv';
+import { config } from 'dotenv';
 import { existsSync } from 'fs';
+import { CheckConfigFile, LoadConfig, Path } from './types';
+import { FileNotFound } from './error';
+import { DotenvParseOutputExtended } from './interface';
 
 /**
  * Load environment variables
  *
  * @param { string } path - Environment variable path.
- * @returns { DotenvParseOutput | undefined } - environment variables
+ * @returns { DotenvParseOutput } - environment variables
  */
-const loadConfig = async (
-  path: string
-): Promise<DotenvParseOutput | undefined> => {
-  if (!existsSync(path)) {
-    return undefined;
-  }
+export const loadConfig: LoadConfig = async (
+  path: Path
+): Promise<DotenvParseOutputExtended> => {
+  checkConfigFile(path);
 
   const { error, parsed } = await config({ path });
   if (error) {
-    return undefined;
+    throw new Error(error.message);
   }
 
   return parsed;
 };
 
-export { DotenvParseOutput, loadConfig };
+const checkConfigFile: CheckConfigFile = (path: Path): void => {
+  if (!existsSync(path)) {
+    throw new FileNotFound('File Not Found');
+  }
+};

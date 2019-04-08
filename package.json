@@ -29,6 +29,7 @@
     "nodemailer": "^5.1.1",
     "ora": "^3.0.0",
     "pug": "^2.0.3",
+    "pusher": "^2.2.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^4.42.0",
     "tortoise": "^1.0.1",
@@ -37,6 +38,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@types/winston": "^2.4.4",
     "eslint": "^5.14.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.16.0",

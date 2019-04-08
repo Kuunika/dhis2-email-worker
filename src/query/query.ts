@@ -1,12 +1,12 @@
 import { Message } from '../worker';
 import { Connection } from 'typeorm';
-import { connectToDatabase } from '../datasource';
 import { Migration, FailQueue, MigrationDataElements } from '../models';
 
-const getData = async (message: Message): Promise<object> => {
+const getData = async (
+  connection: Connection,
+  message: Message
+): Promise<object> => {
   const { migrationId, source } = message;
-
-  const connection: Connection = await connectToDatabase();
 
   const migration: Migration = await connection
     .getRepository(Migration)

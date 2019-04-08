@@ -1,24 +1,26 @@
-import { consume, createWorker, Message } from './helpers';
-import { sendEmail } from '../email';
-import Worker = require('tortoise');
-const env = process.env;
+import { Connection } from "typeorm";
+import { DotenvParseOutput } from "dotenv";
 
-export const consumer = async (): Promise<void> => {
-  const host: string | undefined = env.DEW_QUEUE_HOST || 'amqp://localhost';
-  const worker: Worker = await createWorker(host);
+import { consume, createWorker, Message } from "./helpers";
+import { sendEmail } from "../email";
+import Worker = require("tortoise");
+
+export const startWorker = async (
+  config: DotenvParseOutput,
+  connection: Connection
+): Promise<void> => {
+  const worker: Worker = await createWorker(config.DEW_QUEUE_HOST);
 
   const callback = async (message: any, ack: any) => {
     try {
       const parsedMessage: Message = JSON.parse(message);
-      console.log(parsedMessage);
-      await sendEmail(parsedMessage);
+      console.log("\n", parsedMessage, "\n");
+      await sendEmail(config, connection, parsedMessage);
     } catch (error) {
       console.log(error.message);
     }
     ack();
   };
 
-  const defaultQueueName = 'DHIS2_EMAIL_INTEGRATION_QUEUE';
-  const queueName = process.env.DFQW_QUEUE_NAME || defaultQueueName;
-  await consume(worker, queueName, callback);
+  await consume(worker, config.DEW_QUEUE_NAME, callback);
 };
