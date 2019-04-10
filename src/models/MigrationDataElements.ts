@@ -6,29 +6,28 @@ export class MigrationDataElements {
   public id: number;
 
   @Column()
-  public organizationUnitCode: string;
-
-  @Column()
-  public dataElementId: number;
+  public productId: number;
 
   @Column()
   public migrationId: number;
 
   @Column()
+  public facilityId: number;
+
+  @Column()
   public value: number;
 
   @Column()
+  public dataElementCode: string;
+
+  @Column()
+  public organizationUnitCode: string;
+
+  @Column()
   public isProcessed: boolean;
+  @Column()
+  public migratedAt?: string;
 
   @Column()
-  public isMigrated: boolean;
-
-  @Column()
-  public isElementAuthorized: boolean;
-
-  @Column()
-  public period: string;
-
-  @Column()
-  public isValueValid: boolean;
+  public reportingPeriod: string;
 }

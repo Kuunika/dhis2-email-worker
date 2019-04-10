@@ -1,6 +1,6 @@
 import { Message } from '../worker';
 import { Connection } from 'typeorm';
-import { Migration, FailQueue, MigrationDataElements } from '../models';
+import { Migration, MigrationDataElements } from '../models';
 
 const getData = async (
   connection: Connection,
@@ -27,22 +27,15 @@ const getSum = async (
   connection: Connection,
   migrationId: number
 ): Promise<object> => {
-  const where = { migrationId, isMigrated: true };
+  const where = { migrationId, isProcessed: true };
 
-  const migrationDataElements: MigrationDataElements[] = await connection
+  const totalMigratedElements: number = await connection
     .getRepository(MigrationDataElements)
-    .find(where);
-
-  const failQueues: FailQueue[] = await connection
-    .getRepository(FailQueue)
-    .find(where);
-
-  const totalMigratedElements: number =
-    failQueues.length + migrationDataElements.length;
+    .count(where);
 
   const totalFailedElements: number = await connection
-    .getRepository(FailQueue)
-    .count({ migrationId, isMigrated: false });
+    .getRepository(MigrationDataElements)
+    .count({ migrationId, isProcessed: false });
 
   return { totalMigratedElements, totalFailedElements };
 };

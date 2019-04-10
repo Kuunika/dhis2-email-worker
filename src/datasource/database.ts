@@ -1,10 +1,4 @@
-import {
-  DataElement,
-  FailQueue,
-  Client,
-  MigrationDataElements,
-  Migration
-} from './../models';
+import { MigrationDataElements, Migration } from './../models';
 
 import { DotenvParseOutput } from 'dotenv';
 
@@ -15,13 +9,7 @@ export const connectToDatabase = async (
 ): Promise<Connection> => {
   const options: ConnectionOptions = {
     database: config.DEW_DATABASE || 'dhis2-integration-mediator',
-    entities: [
-      DataElement,
-      FailQueue,
-      Client,
-      MigrationDataElements,
-      Migration,
-    ],
+    entities: [MigrationDataElements, Migration],
     host: config.DEW_DATABASE_HOST || 'localhost',
     password: config.DEW_DATABASE_PASSWORD || '',
     port: Number(config.DEW_DATABASE_PORT) || 3306,
