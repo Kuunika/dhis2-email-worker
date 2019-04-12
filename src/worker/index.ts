@@ -1,2 +1,4 @@
-export * from './consumer';
-export * from './helpers';
+export * from './interface';
+export * from './startWorker';
+export * from './createWorker';
+export * from './consumeMessage';
