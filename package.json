@@ -31,7 +31,6 @@
     "pug": "^2.0.3",
     "pusher": "^2.2.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^4.42.0",
     "tortoise": "^1.0.1",
     "typeorm": "^0.2.15",
     "uuid": "^3.3.2",
