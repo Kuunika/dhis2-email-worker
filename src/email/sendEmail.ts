@@ -1,27 +1,29 @@
-import { Connection } from 'typeorm';
-import { DotenvParseOutput } from 'dotenv';
-import { Message, fetchClientEmail } from '../worker';
-import { loadTemplate } from '../templates';
-import nodemailer = require('nodemailer');
+import { Message } from './../worker/interface';
 import juice = require('juice');
+import { Connection } from 'typeorm';
+import nodemailer = require('nodemailer');
+import { DotenvParseOutput } from 'dotenv';
 import htmlToText = require('html-to-text');
-import { PusherLogger } from '../Logger';
 
-const sendEmail = async (
+import { PusherLogger } from '../Logger';
+import { loadTemplate } from '../templates';
+import { fetchClientEmail } from './fetchClientEmail';
+
+export const sendEmail = async (
   config: DotenvParseOutput,
   connection: Connection,
   message: Message
 ): Promise<boolean> => {
-  const { channelId } = message;
+  const { channelId, clientId } = message;
   const pusherLogger = await new PusherLogger(config, channelId);
   const html: any = await loadTemplate(connection, message);
 
-  const inlinedHtml: any = juice(html);
-  const text: any = htmlToText.fromString(inlinedHtml);
+  const inlinedHtml: any = await juice(html);
+  const text: any = await htmlToText.fromString(inlinedHtml);
 
   const mailOptions = {
-    from: `Kuunika <noreply@kuunika.org>`,
-    to: await fetchClientEmail(message.clientId),
+    from: config.DEW_MAIL_FROM || 'Kuunika <noreply@kuunika.org>',
+    to: await fetchClientEmail(clientId).catch(e => console.log(e.Message)),
     subject: `Data migration for ${new Date()}`,
     html,
     text,
@@ -36,7 +38,10 @@ const sendEmail = async (
     },
   });
 
-  const { rejected = [] } = await transport.sendMail(mailOptions);
+  const { rejected = [] } = await transport
+    .sendMail(mailOptions)
+    .catch(e => console.log(e.message));
+
   if (rejected.length > 0) {
     await pusherLogger.error('email not sent');
     return false;
@@ -45,5 +50,3 @@ const sendEmail = async (
     return true;
   }
 };
-
-export { sendEmail };

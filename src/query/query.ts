@@ -1,8 +1,8 @@
 import { Message } from '../worker';
-import { Connection } from 'typeorm';
+import { Connection, IsNull } from 'typeorm';
 import { Migration, MigrationDataElements } from '../models';
 
-const getData = async (
+export const getMigrationSummary = async (
   connection: Connection,
   message: Message
 ): Promise<object> => {
@@ -13,31 +13,28 @@ const getData = async (
     .findOne({ id: migrationId });
 
   if (migration) {
-    if (source !== 'failqueue') {
-      return migration;
-    } else {
-      return { ...migration, ...(await getSum(connection, migrationId)) };
-    }
+    return source === 'failqueue'
+      ? await getMigrationWithAggregates(connection, migration)
+      : migration;
   } else {
     return {};
   }
 };
 
-const getSum = async (
+const getMigrationWithAggregates = async (
   connection: Connection,
-  migrationId: number
-): Promise<object> => {
-  const where = { migrationId, isProcessed: true };
+  migration: Migration
+): Promise<Migration> => {
+  const { id } = migration;
 
-  const totalMigratedElements: number = await connection
+  migration.totalMigratedElements = await connection
     .getRepository(MigrationDataElements)
-    .count(where);
+    .count({ migrationId: id, isProcessed: true });
 
-  const totalFailedElements: number = await connection
+  migration.totalFailedElements = await connection
     .getRepository(MigrationDataElements)
-    .count({ migrationId, isProcessed: false });
+    // tslint:disable-next-line:no-null-keyword
+    .count({ migrationId: id, migratedAt: IsNull(), isProcessed: true });
 
-  return { totalMigratedElements, totalFailedElements };
+  return migration;
 };
-
-export { getData };
