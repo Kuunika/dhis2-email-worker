@@ -22,7 +22,7 @@ export const sendEmail = async (
   const text: any = await htmlToText.fromString(inlinedHtml);
 
   const mailOptions = {
-    from: `Kuunika <noreply@kuunika.org>`,
+    from: config.DEW_MAIL_FROM || 'Kuunika <noreply@kuunika.org>',
     to: await fetchClientEmail(message.clientId),
     subject: `Data migration for ${new Date()}`,
     html,
