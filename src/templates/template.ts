@@ -1,31 +1,27 @@
-import { Connection } from 'typeorm';
-import { Message } from '../worker';
-import { getData } from '../query';
-import { join } from 'path';
 import pug from 'pug';
-let file: string;
+import { join } from 'path';
+import { Connection } from 'typeorm';
 
-const loadTemplate = async (
+import { Message } from '../worker';
+import { getMigrationSummary } from '../query';
+
+let template: string;
+
+export const loadTemplate = async (
   connection: Connection,
   message: Message
 ): Promise<any> => {
-  const { source, migrationFailed } = message;
+  const migrationSummary = await getMigrationSummary(connection, message);
 
-  file = source;
-  if (source === 'failqueue' && !migrationFailed) {
-    file = 'migration';
-  }
-
-  const data: object = await getData(connection, message);
-
-  const html = pug.renderFile(join(__dirname, '..', `views/${file}.pug`), {
+  const pugOptions = {
     ...message,
-    ...data,
-    client: 'Openlmis',
-    desc: 'Description',
-  });
+    ...migrationSummary,
+  };
+
+  const { source, migrationFailed } = message;
+  template = source === 'failqueue' && !migrationFailed ? 'migration' : source;
+  const path = await join(__dirname, '..', `views/${template}.pug`);
+  const html = await pug.renderFile(path, pugOptions);
 
   return html;
 };
-
-export { loadTemplate };
