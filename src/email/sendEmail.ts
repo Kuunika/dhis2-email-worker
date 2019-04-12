@@ -1,10 +1,10 @@
+import { Message } from './../worker/interface';
 import juice = require('juice');
 import { Connection } from 'typeorm';
 import nodemailer = require('nodemailer');
 import { DotenvParseOutput } from 'dotenv';
 import htmlToText = require('html-to-text');
 
-import { Message } from '../worker';
 import { PusherLogger } from '../Logger';
 import { loadTemplate } from '../templates';
 import { fetchClientEmail } from './fetchClientEmail';
@@ -14,7 +14,7 @@ export const sendEmail = async (
   connection: Connection,
   message: Message
 ): Promise<boolean> => {
-  const { channelId } = message;
+  const { channelId, clientId } = message;
   const pusherLogger = await new PusherLogger(config, channelId);
   const html: any = await loadTemplate(connection, message);
 
@@ -23,7 +23,7 @@ export const sendEmail = async (
 
   const mailOptions = {
     from: config.DEW_MAIL_FROM || 'Kuunika <noreply@kuunika.org>',
-    to: await fetchClientEmail(message.clientId),
+    to: await fetchClientEmail(clientId).catch(e => console.log(e.Message)),
     subject: `Data migration for ${new Date()}`,
     html,
     text,
