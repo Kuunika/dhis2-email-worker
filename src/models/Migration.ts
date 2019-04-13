@@ -6,28 +6,28 @@ export class Migration {
   public id: number;
 
   @Column()
-  public uploadedAt: string;
+  public uploadedAt: Date;
 
   @Column()
-  public structureValidatedAt: string;
+  public structureValidatedAt: Date;
 
   @Column()
-  public structureFailedValidationAt: string;
+  public structureFailedValidationAt: Date;
 
   @Column()
-  public elementsAuthorizationAt: string;
+  public elementsAuthorizationAt: Date;
 
   @Column()
-  public elementsFailedAuthorizationAt: string;
+  public elementsFailedAuthorizationAt: Date;
 
   @Column()
-  public valuesValidatedAt: string;
+  public valuesValidatedAt: Date;
 
   @Column()
-  public valuesFailedValidationAt: string;
+  public valuesFailedValidationAt: Date;
 
   @Column()
-  public reportDispatchedAt: string;
+  public reportDispatchedAt: Date;
 
   @Column()
   public totalMigratedElements: number;
@@ -39,8 +39,11 @@ export class Migration {
   public totalFailedElements: number;
 
   @Column()
-  public migrationCompletedAt: string;
+  public migrationCompletedAt: Date;
 
   @Column()
   public clientId: number;
+
+  @Column()
+  public createdAt: Date;
 }

@@ -26,8 +26,11 @@ export class MigrationDataElements {
   @Column()
   public isProcessed: boolean;
   @Column()
-  public migratedAt?: string;
+  public migratedAt?: Date;
 
   @Column()
   public reportingPeriod: string;
+
+  @Column()
+  public createdAt: Date;
 }
