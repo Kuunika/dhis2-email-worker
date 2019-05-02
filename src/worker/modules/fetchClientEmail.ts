@@ -1,7 +1,6 @@
 import _axios from 'axios';
 import https from 'https';
 import * as CryptoJS from 'crypto-js';
-
 import { EmailClientNotFound } from '.';
 
 export const fetchClientEmail = async (clientId: string) => {
@@ -37,7 +36,7 @@ export const fetchClientEmail = async (clientId: string) => {
   }).catch((err: Error) => console.log(err.message));
 
   if (clients) {
-    const client = clients.data.find(client => client.clientID === clientId);
+    const client = clients.data.find(c => c.clientID === clientId);
     return (client && client.contactPersonEmail) ? client.contactPersonEmail : '';
   }
 
