@@ -16,8 +16,6 @@ export const startWorker = async (
   const callback = async (message: any, ack: any) => {
     try {
       const parsedMessage: Message = JSON.parse(message);
-      console.log('\n', parsedMessage, '\n');
-
       const transport = await createTransport(config);
 
       const { clientId } = parsedMessage;

@@ -6,18 +6,19 @@ import htmlToText = require('html-to-text');
 
 import { Message } from '../worker';
 import { getMigrationSummary } from '../query';
-import { Template } from './templateInterface';
 
 let template: string;
 
 export const loadTemplate = async (
   connection: Connection,
   message: Message
-): Promise<Template> => {
+): Promise<{
+  html: string;
+  text: string;
+}> => {
   const migrationSummary = await getMigrationSummary(connection, message);
 
-  const { source, migrationFailed } = message;
-  template = source === 'failqueue' && !migrationFailed ? 'migration' : source;
+  template = getTemplateName(message);
 
   const pugOptions = {
     ...message,
@@ -29,4 +30,9 @@ export const loadTemplate = async (
   const text = await htmlToText.fromString(await juice(html));
 
   return { html, text };
+};
+
+const getTemplateName = (message: Message): string => {
+  const { source, migrationFailed } = message;
+  return source === 'failqueue' && !migrationFailed ? 'migration' : source;
 };

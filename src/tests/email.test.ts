@@ -12,7 +12,6 @@ import { Template } from '../templates/templateInterface';
 import { loadTemplate } from '../templates';
 import { getMailOptions } from '../worker/modules/getMailOptions';
 
-let path: string;
 let config: DotenvParseOutput;
 let connection: Connection;
 let testMigration: Migration;
@@ -24,7 +23,7 @@ let mailOptions;
 describe('Email integration test', () => {
 
   beforeEach(async () => {
-    path = join(__dirname, 'fixtures', '.env.test');
+    const path = join(__dirname, 'fixtures', '.env.test');
     config = await loadConfig(path);
 
     connection = await connectToDatabase(config);
