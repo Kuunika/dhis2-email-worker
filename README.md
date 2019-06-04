@@ -37,11 +37,11 @@ npm install
 
 ### step 3: environmental variables
 
-Create a `.env` file with the contents of your .env.example file.
+Create a `.env` file with the contents of your .env.default file.
 
 ```sh
 # copy the .env.example to .env file
-cp .env.example .env
+cp .env.default .env
 ```
 
 Modify the `.env` file and make sure it reflects the environment settings.
