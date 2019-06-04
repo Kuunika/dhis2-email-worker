@@ -3,8 +3,9 @@ import { DotenvParseOutput } from 'dotenv';
 
 import Worker = require('tortoise');
 
-import { sendEmail } from '../email';
-import { consumeMessage, createWorker, Message } from '.';
+// import { sendEmail } from '../email';
+import { consumeMessage, createWorker, Message, getMailOptions, createTransport, pushToLogWorker } from '.';
+import { loadTemplate } from '../templates';
 
 export const startWorker = async (
   config: DotenvParseOutput,
@@ -13,16 +14,35 @@ export const startWorker = async (
   const worker: Worker = await createWorker(config);
 
   const callback = async (message: any, ack: any) => {
-    await setTimeout(async () => {
-      try {
-        const parsedMessage: Message = JSON.parse(message);
-        console.log('\n', parsedMessage, '\n');
-        await sendEmail(config, connection, parsedMessage);
-      } catch (error) {
-        console.log(error.message);
+    try {
+      const parsedMessage: Message = JSON.parse(message);
+
+      const transport = await createTransport(config);
+
+      const { clientId } = parsedMessage;
+      const template = await loadTemplate(connection, parsedMessage);
+      const mailOptions = await getMailOptions(config, clientId, template);
+
+      const { rejected = [] } = await transport.sendMail(mailOptions);
+
+      if (rejected.length > 0) {
+        parsedMessage.message = JSON.stringify({
+          service: 'Email',
+          message: 'Email was not sent',
+        });
+        await pushToLogWorker(config, worker, parsedMessage);
+      } else {
+        parsedMessage.message = JSON.stringify({
+          service: 'Email',
+          message: 'Email sent successfully',
+        });
+        await pushToLogWorker(config, worker, parsedMessage);
       }
-      ack();
-    }, 3000);
+
+    } catch (error) {
+      console.log(error.message);
+    }
+    ack();
   };
 
   await consumeMessage(config, worker, callback);
