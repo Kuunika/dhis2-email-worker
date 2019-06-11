@@ -33,7 +33,7 @@ export const startWorker = async (
         await pushToLogWorker(config, worker, parsedMessage);
       } else {
         parsedMessage.message = JSON.stringify({
-          service: 'Email',
+          service: 'email',
           message: 'Email sent successfully',
         });
         await pushToLogWorker(config, worker, parsedMessage);
