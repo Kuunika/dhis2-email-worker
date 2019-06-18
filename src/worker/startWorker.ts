@@ -27,7 +27,7 @@ export const startWorker = async (
 
       if (rejected.length > 0) {
         parsedMessage.message = JSON.stringify({
-          service: 'Email',
+          service: 'email',
           message: 'Email was not sent',
         });
         await pushToLogWorker(config, worker, parsedMessage);
