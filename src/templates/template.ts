@@ -21,6 +21,7 @@ export const loadTemplate = async (
   template = getTemplateName(message);
 
   const pugOptions = {
+    client: message.clientId,
     ...message,
     ...migrationSummary,
   };
