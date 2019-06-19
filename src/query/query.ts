@@ -1,6 +1,6 @@
 import { Message } from '../worker';
 import { Connection } from 'typeorm';
-import { Migration } from '../models';
+import { Migration, ValidationFailures } from '../models';
 
 export const getMigrationSummary = async (
   connection: Connection,
@@ -14,3 +14,12 @@ export const getMigrationSummary = async (
 
   return (migration) ? migration : {};
 };
+
+export const getValidationFailures = async (
+  connection: Connection,
+  migrationId: number
+): Promise<ValidationFailures[]> => {
+  return connection
+    .getRepository(ValidationFailures)
+    .find({ migrationId });
+}

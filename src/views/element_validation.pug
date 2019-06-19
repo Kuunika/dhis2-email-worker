@@ -1,0 +1,12 @@
+extends email-layout
+
+block content
+  h4 Dear #{client}
+
+  p We encountered a few issues with the payload with description "#{description}".
+
+  p Some/all of the elements in the payload failed to pass the necessary validation, please find attached a list of those that failed.
+
+  br
+  p Regards,
+  p Administrator

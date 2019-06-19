@@ -25,10 +25,8 @@ export const startWorker = async (
       console.log();
 
       const transport = await createTransport(config);
-
-      const { clientId } = parsedMessage;
       const template = await loadTemplate(connection, parsedMessage);
-      const mailOptions = await getMailOptions(config, clientId, template);
+      const mailOptions = await getMailOptions(config, template, connection, parsedMessage);
 
       const { rejected = [] } = await transport.sendMail(mailOptions);
 
