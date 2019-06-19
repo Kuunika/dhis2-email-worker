@@ -13,9 +13,16 @@ export const startWorker = async (
 ): Promise<void> => {
   const worker: Worker = await createWorker(config);
 
+  console.log('Ready to recieve messages');
+  console.log();
+
   const callback = async (message: any, ack: any) => {
     try {
       const parsedMessage: Message = JSON.parse(message);
+
+      console.log('received message: ');
+      console.log(parsedMessage);
+      console.log();
 
       const transport = await createTransport(config);
 
@@ -31,12 +38,16 @@ export const startWorker = async (
           message: 'Email was not sent',
         });
         await pushToLogWorker(config, worker, parsedMessage);
+        console.log(parsedMessage.message);
+        console.log();
       } else {
         parsedMessage.message = JSON.stringify({
           service: 'email',
           message: 'Email sent successfully',
         });
         await pushToLogWorker(config, worker, parsedMessage);
+        console.log(parsedMessage.message);
+        console.log();
       }
 
     } catch (error) {
