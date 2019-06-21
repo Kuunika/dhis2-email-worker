@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'ValidationFailures' })
+@Entity({ name: 'Validationfailures' })
 export class ValidationFailures {
   @PrimaryGeneratedColumn()
   public id: number;
