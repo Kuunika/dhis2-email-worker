@@ -12,7 +12,7 @@ export const fetchClientEmail = async (clientId: string) => {
 
   const response = await axios({
     method: 'GET',
-    url: `${process.env.DEW_OPENHIM_URL}authenticate/root@openhim.org`,
+    url: `${process.env.DEW_OPENHIM_URL}authenticate/${process.env.DEW_OPENHIM_USERNAME}`,
   }).catch((err: Error) => console.log(err.message));
 
   if (!response) {
