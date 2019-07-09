@@ -12,6 +12,13 @@ export const getMigrationSummary = async (
     .getRepository(Migration)
     .findOne({ id: migrationId });
 
+  await connection
+    .getRepository(Migration)
+    .save({
+      ...migration,
+      reportDispatchedAt: new Date(Date.now()),
+    });
+
   return (migration) ? migration : {};
 };
 
