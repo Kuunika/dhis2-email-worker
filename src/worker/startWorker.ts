@@ -18,40 +18,42 @@ export const startWorker = async (
 
   const callback = async (message: any, ack: any) => {
     try {
-      const parsedMessage: Message = JSON.parse(message);
+      await setTimeout(async () => {
+        const parsedMessage: Message = JSON.parse(message);
 
-      console.log('received message: ');
-      console.log(parsedMessage);
-      console.log();
-
-      const transport = await createTransport(config);
-      const template = await loadTemplate(connection, parsedMessage);
-      const mailOptions = await getMailOptions(config, template, connection, parsedMessage);
-
-      const { rejected = [] } = await transport.sendMail(mailOptions);
-
-      if (rejected.length > 0) {
-        parsedMessage.message = JSON.stringify({
-          service: 'email',
-          message: 'Email was not sent',
-        });
-        await pushToLogWorker(config, worker, parsedMessage);
-        console.log(parsedMessage.message);
+        console.log('received message: ');
+        console.log(parsedMessage);
         console.log();
-      } else {
-        parsedMessage.message = JSON.stringify({
-          service: 'email',
-          message: 'Email sent successfully',
-        });
-        await pushToLogWorker(config, worker, parsedMessage);
-        console.log(parsedMessage.message);
-        console.log();
-      }
 
+        const transport = await createTransport(config);
+        const template = await loadTemplate(connection, parsedMessage);
+        const mailOptions = await getMailOptions(config, template, connection, parsedMessage);
+
+        const { rejected = [] } = await transport.sendMail(mailOptions);
+
+        if (rejected.length > 0) {
+          parsedMessage.message = JSON.stringify({
+            service: 'email',
+            message: 'Email was not sent',
+          });
+          await pushToLogWorker(config, worker, parsedMessage);
+          console.log(parsedMessage.message);
+          console.log();
+        } else {
+          parsedMessage.message = JSON.stringify({
+            service: 'email',
+            message: 'Email sent successfully',
+          });
+          await pushToLogWorker(config, worker, parsedMessage);
+          console.log(parsedMessage.message);
+          console.log();
+        }
+
+        ack();
+      }, 500);
     } catch (error) {
       console.log(error.message);
     }
-    ack();
   };
 
   await consumeMessage(config, worker, callback);
