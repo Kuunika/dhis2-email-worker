@@ -7,10 +7,9 @@ Email worker is a background process that runs against email queue. It sends ema
 Email worker uses a number of projects and dependencies to work properly:
 
 - [NodeJS > v10.12](https://nodejs.org/en/download/ "node")
-- [MySQL](https://dev.mysql.com/downloads/mysql/ "mysql")
-- [DHIS2 Integration Mediator](https://github.com/BaobabHealthTrust/dhis2-integration-mediator)
-- [DHIS2 Migration Worker](https://github.com/Kuunika/dhis2-migration-worker)
-- [DHIS2 Fail Queue Worker](https://github.com/Kuunika/dhis2-fail-queue-worker)
+- [MySQL v5.5](https://dev.mysql.com/downloads/mysql/ "mysql")
+- [adx-products-populator](https://github.com/BaobabHealthTrust/adx-products-populator)
+
 
 ## Installation
 
