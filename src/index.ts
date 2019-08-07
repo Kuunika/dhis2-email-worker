@@ -16,6 +16,6 @@ const main = async (): Promise<void> => {
 
 try{
   main();
-} cactch(error) {
+} catch(error) {
   console.log(`Error: ${error.message}`)
 }
