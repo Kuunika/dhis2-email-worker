@@ -14,4 +14,8 @@ const main = async (): Promise<void> => {
   await startWorker(config, connection);
 };
 
-main();
+try{
+  main();
+} cactch(error) {
+  console.log(`Error: ${error.message}`)
+}
