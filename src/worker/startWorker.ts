@@ -28,7 +28,7 @@ export const startWorker = async (
         const template = await loadTemplate(connection, parsedMessage);
         const mailOptions = await getMailOptions(config, template, connection, parsedMessage);
 
-        const { rejected = [] } = await transport.sendMail(mailOptions);
+        const { rejected = [] } = await transport.sendMail(mailOptions).catch(error => console.log(error.mesage));
 
         if (rejected.length > 0) {
           parsedMessage.message = JSON.stringify({

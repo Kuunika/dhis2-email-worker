@@ -11,9 +11,7 @@ export const createTransport = async (config: DotenvParseOutput) => {
     },
     pool: true,
     maxConnections: 1,
-    maxMessages: 3,
-    rateDelta: 1000,
-    rateLimit: 1
+    maxMessages: 2
   });
 };
 
