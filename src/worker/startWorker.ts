@@ -3,7 +3,6 @@ import { DotenvParseOutput } from 'dotenv';
 
 import Worker = require('tortoise');
 
-// import { sendEmail } from '../email';
 import { consumeMessage, createWorker, Message, getMailOptions, createTransport, pushToLogWorker } from '.';
 import { loadTemplate } from '../templates';
 
@@ -55,6 +54,5 @@ export const startWorker = async (
       console.log(error.message);
     }
   };
-
   await consumeMessage(config, worker, callback);
 };
