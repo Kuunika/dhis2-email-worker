@@ -40,11 +40,11 @@ export const getMailOptions = async (
   return mailOptions;
 };
 
-const unique = (data): string => {
+const unique = (data: string): string => {
   const logs = data.toString().split("\n");
   const missingDataElements = [];
   const missingFacilities = [];
-  logs.forEach(entry => {
+  logs.forEach((entry: string) => {
     const wrapper = entry.split(" ");
     const code = wrapper[wrapper.length - 1];
     if (entry.startsWith("Failed to find dataElement")) {
