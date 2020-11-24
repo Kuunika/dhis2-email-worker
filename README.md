@@ -2,6 +2,8 @@
 
 Email worker is a background process that runs against email queue. It sends emails based on the data read in the queue
 
+![version](https://img.shields.io/github/package-json/v/Kuunika/dhis2-email-worker?color=green&style=for-the-badge)
+
 ## Dependencies
 
 Email worker uses a number of projects and dependencies to work properly:
