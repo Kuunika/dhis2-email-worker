@@ -30,7 +30,7 @@
     "nodemailer": "^5.1.1",
     "nodemailer-mock-transport": "^1.3.0",
     "ora": "^3.0.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pusher": "^2.2.0",
     "reflect-metadata": "^0.1.13",
     "tortoise": "^1.0.1",
