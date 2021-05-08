@@ -34,7 +34,7 @@
     "pusher": "^2.2.0",
     "reflect-metadata": "^0.1.13",
     "tortoise": "^1.0.1",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.2.25",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
   },
